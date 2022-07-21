@@ -1,0 +1,10 @@
+server:
+  port: 8080
+  
+spring:
+  application:
+    name: FlightDetailsService
+    
+eureka:
+  instance:
+    hostname: localhost
