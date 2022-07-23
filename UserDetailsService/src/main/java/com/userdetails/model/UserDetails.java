@@ -3,11 +3,14 @@ package com.userdetails.model;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+@Document(collection = "UserDetails")
 public class UserDetails {
 	
+
+	private String Role="user";
 	private String firstName;
 	private String lastName;
 	private int id;

@@ -18,7 +18,14 @@ import com.userdetails.model.UserDetails;
 
 public interface UserRepository extends MongoRepository<UserDetails, Integer> {
 
- UserDetails findById(int id);
+ public  UserDetails findById(int id);
+
+ public  Optional<UserDetails> findById(String email);
+
+public void deleteById(String email);
+
+ public UserDetails findByFirstName(String username);
+ 
 
 	
 

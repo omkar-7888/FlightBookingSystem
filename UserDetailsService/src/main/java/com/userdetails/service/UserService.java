@@ -20,24 +20,17 @@ public class UserService {
 		userRepo.save(userDetails);
 	}
 	
-//	public Optional<UserDetails> findUser (String email) {
-//		 return userRepo.findById(email);
-//	}
+	public Optional<UserDetails> findUser (String email) {
+		 return userRepo.findById(email);
+	}
 	
 	public List<UserDetails> findAllUser(){
 		 return userRepo.findAll();
 	}
 	
-//	public void updateUser(UserDetails userDetails) {
-//		
-//		Optional<UserDetails> update = userRepo.findById(userDetails.getEmail());
-//				
-//		if(update!=null) {
-//			
-//		userRepo.save(userDetails);
-//		}
-//		
-//	}
+	
+	
+
 public String updateUser(UserDetails userDetails) {
 		
 		UserDetails update = userRepo.findById(userDetails.getId());
@@ -51,9 +44,9 @@ public String updateUser(UserDetails userDetails) {
 			return "not updated";
 	}
 	
-//	public void deleteUser( String email) {
-//		userRepo.deleteById(email);
-//	}
-//	
+	public void deleteUser( String email) {
+		userRepo.deleteById(email);
+	}
+	
 
 }
