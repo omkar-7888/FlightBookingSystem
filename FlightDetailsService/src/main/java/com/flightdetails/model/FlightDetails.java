@@ -1,11 +1,22 @@
+
 package com.flightdetails.model;
 
+import java.util.Date;
+
+
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Document(collection = "FlightDetails")
 public class FlightDetails {
 	
 	private String flightName;
 	private String startFrom;
 	private String destination;
-	private int id;
+	@JsonFormat(pattern = "dd-MM-yyyy")
+	private Date flightDate;
+	private String id;
 	public String getFlightName() {
 		return flightName;
 	}
@@ -24,10 +35,10 @@ public class FlightDetails {
 	public void setDestination(String destination) {
 		this.destination = destination;
 	}
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public FlightDetails() {

@@ -12,5 +12,11 @@ public interface FlightRepository extends MongoRepository<FlightDetails, Integer
 
 FlightDetails findByFlightName(String userName);
 
+
+FlightDetails findById(String id);
+
+
+void deleteById(String id);
+
 	
 }

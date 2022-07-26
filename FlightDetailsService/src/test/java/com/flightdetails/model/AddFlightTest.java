@@ -31,7 +31,7 @@ public class AddFlightTest {
 		fDetails.setFlightName("IndiGo");
 		fDetails.setStartFrom("Mumbai");
 		fDetails.setDestination("Pune");
-		fDetails.setId(102);
+		fDetails.setId("10T2");
 		
 		flightService.addFlight(fDetails);
 		
@@ -66,14 +66,18 @@ public class AddFlightTest {
 		flightDetails.setFlightName("IndiGoo");
 		flightDetails.setStartFrom("Mumbai");
 		flightDetails.setDestination("Kolkata");
-		flightDetails.setId(1001);
+		flightDetails.setId("100E");
 
 		flightService.addFlight(flightDetails);
-		flightService.deleteFlight(1001);
+		flightService.deleteFlight("100E");
 		FlightDetails fd = flightService.getFlight("IndiGoo");
 		assertNull(fd);
 
 
+		
+	}
+	@Test
+	public void updateTest() {
 		
 	}
 	
