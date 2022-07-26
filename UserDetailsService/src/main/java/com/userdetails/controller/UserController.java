@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,18 +41,18 @@ public class UserController {
 	public ResponseEntity<?> addUser(@RequestBody UserDetails userDetails){
 		
 		
-		//if(userDetails.getPassword().equals(userDetails.getConfirmPassword())) {
+		if(userDetails.getPassword().equals(userDetails.getConfirmPassword())) {
 		userService.addUser(userDetails);
 		
-		//} 
-//		else {
-//			return ResponseEntity.ok("Check Your Password");
-//		}
-//		
+		} 
+		else {
+			return ResponseEntity.ok("Check Your Password");
+		}
+		
 		return ResponseEntity.ok("User Added");
 	}
-	@GetMapping("/findAllUSer")
-	public List<UserDetails> findAllUser(){
+	@GetMapping("/findAllUser")
+	public Iterable<UserDetails> findAllUser(){
 		return userService.findAllUser();
 	}
 	@GetMapping("/")
@@ -59,20 +60,39 @@ public class UserController {
 		return "Welcome To Flight Booking";
 	}
 	
-//	@GetMapping("/findUser/{email}")
-//	public Optional<UserDetails> findUser(@RequestBody String email) {
-//		return userService.findUser(email);
-//	}
-//	
+	@GetMapping("/findUser/{id}")
+	public UserDetails findUser(@PathVariable int id) {
+		
+		UserDetails user = userService.findUser(id);
+		if(user==null) {
+			throw new FindUserException();
+		}
+		return userService.findUser(id);
+	}
+	
 	@PatchMapping("/updateUser")
 	public String updateUser(@RequestBody UserDetails userDetails){
+		
+		UserDetails user= userService.findUser(userDetails.getId());
+		
+		if(user==null) {
+			throw new UpdateUserExcetion();
+		}
+		
 		return userService.updateUser(userDetails);
 
 	}
 	
-	@DeleteMapping("/deleteUser/{email}")
-	public ResponseEntity<?> deleteUser(@RequestBody String email){
-		userService.deleteUser(email);
+	@DeleteMapping("/deleteUser/{id}")
+	public ResponseEntity<?> deleteUser(@PathVariable int id){
+		
+		UserDetails user= userService.findUser(id);
+		
+		if(user==null) {
+			throw new DeleteUserException();
+		}
+		
+		userService.deleteUser(id);
 		
 		return ResponseEntity.ok("User Deleted Successfully");
 		

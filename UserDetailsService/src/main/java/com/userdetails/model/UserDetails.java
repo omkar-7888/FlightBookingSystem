@@ -2,23 +2,59 @@ package com.userdetails.model;
 
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.SQLDelete;
+
+//import org.springframework.data.annotation.Id;
+//import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-@Document(collection = "UserDetails")
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+//@Document(collection = "UserDetails")
+@Entity
+@Table(name = "user_details")
+
+@SQLDelete(sql = "UPDATE user_details SET deleted = true WHERE id=?")
+
 public class UserDetails {
 	
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private int id;
+	
 	private String Role="user";
 	private String firstName;
 	private String lastName;
-	private int id;
 	private String email;
 	private String password;
 	private String confirmPassword;
-	@JsonFormat(pattern = "dd-mm-yyyy")
+	@JsonFormat(pattern = "dd-MM-yyyy")
 	private Date dateOfBirth;
+	
+	
+	@Column(name = "deleted")
+	private boolean deleted = Boolean.FALSE; //FALSE = Not Deleted TRUE = Deleted
+	
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public boolean isDeleted() {
+		return deleted;
+	}
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -58,12 +94,7 @@ public class UserDetails {
 	public UserDetails() {
 		super();
 	}
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 	
 
 }

@@ -2,6 +2,7 @@ package com.userdetails.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +18,36 @@ public class UserService {
 	
 	public void addUser(UserDetails userDetails) {
 		
+//		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//		String numbers = "01234567890123456789";
+//		
+//		String alphaNumeric = alphabet + numbers ;
+//		
+//		StringBuilder sb = new StringBuilder();
+//		
+//		Random random = new Random();
+//		
+//		int length = 4;
+//		for(int i = 0; i<length;i++) {
+//			int index = random.nextInt(alphaNumeric.length());
+//			
+//			char randomChar = alphaNumeric.charAt(index);
+//			
+//			sb.append(randomChar);
+//			
+//		}
+//		
+//		String ranString = sb.toString();
+//		
+//		userDetails.set
 		userRepo.save(userDetails);
 	}
 	
-	public Optional<UserDetails> findUser (String email) {
-		 return userRepo.findById(email);
+	public UserDetails findUser (int id) {
+		 return userRepo.findById(id);
 	}
 	
-	public List<UserDetails> findAllUser(){
+	public Iterable<UserDetails> findAllUser(){
 		 return userRepo.findAll();
 	}
 	
@@ -44,9 +67,13 @@ public String updateUser(UserDetails userDetails) {
 			return "not updated";
 	}
 	
-	public void deleteUser( String email) {
-		userRepo.deleteById(email);
+//	public void deleteUser( String email) {
+//		userRepo.deleteById(email);
+//	}
+//	
+
+	public void deleteUser (int id) {
+		userRepo.deleteById(id);
 	}
-	
 
 }

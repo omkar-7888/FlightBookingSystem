@@ -41,11 +41,12 @@ public class UserSecurity extends WebSecurityConfigurerAdapter {
 	}
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable().authorizeRequests().antMatchers("/add","/getallflights","/auth","/addUser").permitAll().and().formLogin();
-//		http.authorizeRequests()
-//		.antMatchers("/**").hasRole("ADMIN")
-//		.antMatchers("/get**").hasAnyRole("USER","ADMIN")
-//		.antMatchers("/").permitAll().and().formLogin();
+		http.csrf().disable().authorizeRequests().antMatchers("/add","/getallflights","/auth","/addUser","/findAllUser","/findUser/{email}"
+				,"/updateUser","/deleteUser/{email}").permitAll().and().formLogin();
+		http.authorizeRequests()
+		.antMatchers("/**").hasRole("ADMIN")
+		.antMatchers("/get**").hasAnyRole("USER","ADMIN")
+		.antMatchers("/").permitAll().and().formLogin();
 	}
 
 }
