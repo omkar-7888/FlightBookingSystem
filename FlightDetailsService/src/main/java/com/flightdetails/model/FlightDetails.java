@@ -14,7 +14,7 @@ public class FlightDetails {
 	private String flightName;
 	private String startFrom;
 	private String destination;
-	@JsonFormat(pattern = "dd-MM-yyyy")
+	@JsonFormat(pattern = "DD-MM-YY")
 	private Date flightDate;
 	private String id;
 	public String getFlightName() {
