@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -24,6 +25,8 @@ import com.bookingdetails.service.BookingService;
 import com.bookingdetails.service.GenderService;
 
 @RestController
+@RequestMapping("/book")
+@CrossOrigin("*")
 public class BookingController {
 	
 	@Autowired
@@ -37,14 +40,8 @@ public class BookingController {
 	@PostMapping("/addBooking/{flightId}")
 	public ResponseEntity<?> addBooking(@RequestBody BookingDetails bookingDetails,@PathVariable String flightId) {
 		
-		if(genderService.checkGender(bookingDetails.getGender())) {
-			
 		
-		 bookingService.addBooking(bookingDetails, flightId);
-		}
-		else {
-			throw new AddBookingException();
-		}
+		bookingService.addBooking(bookingDetails,flightId);
 		
 		return ResponseEntity.ok("Flight Booked");
 		
@@ -53,9 +50,9 @@ public class BookingController {
 		
 	}
 	@GetMapping("/find/{id}") // id=Flightid
-	public BookingDetails find(@PathVariable String id){
+	public Optional<BookingDetails> find(@PathVariable String id){
 		
-		BookingDetails booking = bookingService.get(id);
+		Optional<BookingDetails> booking = bookingService.get(id);
 		if(booking == null) {
 			throw new FindBookingException();
 		}
@@ -85,14 +82,14 @@ public class BookingController {
 	@RequestMapping("/getBookingDetails/{id}") 
 	public ResponseEntity<?> getBookingDetails(@PathVariable String id){
 		FlightDetails[] flights = restTemplate.getForObject("http://localhost:8081/getAllFlights", FlightDetails[].class);
-		BookingDetails booking = bookingService.get(id);
+		Optional<BookingDetails> booking = bookingService.get(id);
 		ResponseClass response = new ResponseClass();
 		
 		for(FlightDetails f:flights) {
-			if(booking.getFlightName().equals(f.getId())) {
+			if(booking.get().equals(f.getId())) {
 				response.setFrom(f.getStartFrom());
 				response.setTo(f.getDestination());
-				response.setPassengerName(booking.getFirstName());
+				response.setPassengerName(booking.get().getFirstName());
 				response.setFlightName(f.getFlightName());
 			}
 		}
@@ -103,4 +100,5 @@ public class BookingController {
 			return ResponseEntity.ok("Booking Not Found");
 		
 	}
+	
 }

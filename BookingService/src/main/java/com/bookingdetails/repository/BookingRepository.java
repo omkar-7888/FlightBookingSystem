@@ -7,5 +7,5 @@ import com.bookingdetails.model.BookingDetails;
 public interface BookingRepository extends MongoRepository<BookingDetails, String> {
 	
 	
-public BookingDetails FindById(String id);
+//public BookingDetails FindById(String id);
 }

@@ -23,7 +23,7 @@ public class BookingService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	public boolean status =false;	
+	public boolean status =true;	
 	
 	public ResponseEntity<?> addBooking(BookingDetails bookingDetails,String flightId) {
 		
@@ -82,8 +82,8 @@ public class BookingService {
 		}
 	}
 
-	public BookingDetails get(String id){
-		return bookingRepo.FindById(id);
+	public Optional<BookingDetails> get(String id){
+		return bookingRepo.findById(id);
 	}
 	
 	public void update(BookingDetails bookingDetails) {
