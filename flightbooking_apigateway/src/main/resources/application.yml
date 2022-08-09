@@ -1,0 +1,29 @@
+server:
+  port: 9090
+  
+eureka:
+  instance:
+    hostname: localhost
+    
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: userdetailsservice
+        uri: lb://userdetailsservice
+        predicates:
+        - Path=/user/**
+      - id: flightbookingservice
+        uri: lb://flightbookingservice
+        predicates:
+        - Path=/book/**
+      - id: flightdetailsservice
+        uri: lb://flightdetailsservice
+        predicates:
+        - Path=/flights/**
+      - id: flightsearchservice
+        uri: lb://flightsearchservice
+        predicates:
+        - Path=/search/**
