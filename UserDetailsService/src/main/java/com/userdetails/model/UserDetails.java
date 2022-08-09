@@ -16,21 +16,25 @@ import org.hibernate.annotations.SQLDelete;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+
+
 //@Document(collection = "UserDetails")
 @Entity
+
 @Table(name = "user_details")
 
 @SQLDelete(sql = "UPDATE user_details SET deleted = true WHERE id=?")
 
 public class UserDetails {
 	
-	@Id
+	
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
 	private String Role="user";
 	private String firstName;
 	private String lastName;
+	@Id
 	private String email;
 	private String password;
 	private String confirmPassword;
@@ -43,6 +47,12 @@ public class UserDetails {
 	
 	
 	
+	public String getRole() {
+		return Role;
+	}
+	public void setRole(String role) {
+		Role = role;
+	}
 	public int getId() {
 		return id;
 	}

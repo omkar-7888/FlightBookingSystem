@@ -43,12 +43,12 @@ public class UserService {
 		userRepo.save(userDetails);
 	}
 	
-	public UserDetails findUser (int id) {
-		 return userRepo.findById(id);
+	public Optional<UserDetails> findUser (String userName) {
+		 return userRepo.findById(userName);
 	}
 	
-	public Iterable<UserDetails> findAllUser(){
-		 return userRepo.findAll();
+	public List findAllUser(){
+		 return userRepo.findAllByIdNotNullAndDeletedIsFalse();
 	}
 	
 	
@@ -56,7 +56,7 @@ public class UserService {
 
 public String updateUser(UserDetails userDetails) {
 		
-		UserDetails update = userRepo.findById(userDetails.getId());
+		Optional<UserDetails> update = userRepo.findById(userDetails.getEmail());
 				
 		if(update!=null) {
 			
@@ -72,8 +72,8 @@ public String updateUser(UserDetails userDetails) {
 //	}
 //	
 
-	public void deleteUser (int id) {
-		userRepo.deleteById(id);
+	public void deleteUser (String userName) {
+		userRepo.deleteById(userName);
 	}
 
 }

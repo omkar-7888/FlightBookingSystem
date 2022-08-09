@@ -9,16 +9,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 //import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import com.userdetails.model.UserDetails;
 
+@Repository
+public interface UserRepository extends JpaRepository<UserDetails, String> {
 
 
-public interface UserRepository extends CrudRepository<UserDetails, Integer> {
 
-
-	//@Query("select UserDetails from UserDetails userDetails where UserDetails.deleted=:false and Order by UserDetails.id DESC ")
-	//List<UserDetails> findAllUser();
+	
+	List<UserDetails> findAllByIdNotNullAndDeletedIsFalse();
 	
  public  UserDetails findById(int id);
 

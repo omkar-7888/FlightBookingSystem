@@ -10,12 +10,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.userdetails.jwtutil.JwtUtil;
@@ -26,6 +29,8 @@ import com.userdetails.service.UserSecurityDetailsService;
 import com.userdetails.service.UserService;
 
 @RestController
+@RequestMapping("/user")
+@CrossOrigin("*")
 public class UserController {
 	
 	@Autowired
@@ -35,6 +40,8 @@ public class UserController {
 	@Autowired
 	private JwtUtil jwtUtil;
 	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	@Autowired
 	private UserSecurityDetailsService userServicee;
 	
 	@PostMapping("/addUser")
@@ -42,6 +49,9 @@ public class UserController {
 		
 		
 		if(userDetails.getPassword().equals(userDetails.getConfirmPassword())) {
+	
+		userDetails.setPassword(this.bCryptPasswordEncoder.encode(userDetails.getPassword()));
+		userDetails.setConfirmPassword(this.bCryptPasswordEncoder.encode(userDetails.getConfirmPassword()));
 		userService.addUser(userDetails);
 		
 		} 
@@ -60,20 +70,17 @@ public class UserController {
 		return "Welcome To Flight Booking";
 	}
 	
-	@GetMapping("/findUser/{id}")
-	public UserDetails findUser(@PathVariable int id) {
+	@GetMapping("/findUser/{userName}")
+	public Optional<UserDetails> findUser(@PathVariable String userName) {
 		
-		UserDetails user = userService.findUser(id);
-		if(user==null) {
-			throw new FindUserException();
-		}
-		return userService.findUser(id);
+		return userService.findUser(userName);
+		
 	}
 	
 	@PatchMapping("/updateUser")
 	public String updateUser(@RequestBody UserDetails userDetails){
 		
-		UserDetails user= userService.findUser(userDetails.getId());
+		Optional<UserDetails> user= userService.findUser(userDetails.getEmail());
 		
 		if(user==null) {
 			throw new UpdateUserExcetion();
@@ -83,16 +90,16 @@ public class UserController {
 
 	}
 	
-	@DeleteMapping("/deleteUser/{id}")
-	public ResponseEntity<?> deleteUser(@PathVariable int id){
+	@DeleteMapping("/deleteUser/{userName}")
+	public ResponseEntity<?> deleteUser(@PathVariable String username){
 		
-		UserDetails user= userService.findUser(id);
+		Optional<UserDetails> user= userService.findUser(username);
 		
 		if(user==null) {
 			throw new DeleteUserException();
 		}
 		
-		userService.deleteUser(id);
+		userService.deleteUser(username);
 		
 		return ResponseEntity.ok("User Deleted Successfully");
 		
